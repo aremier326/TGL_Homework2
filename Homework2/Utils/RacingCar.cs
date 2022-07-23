@@ -1,35 +1,90 @@
 ﻿using Homework2.Utils.Abstracts;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Homework2.Utils
 {
-    public class RacingCar : Vehicle, IEnumerable<RacingCar>
+    /// <summary>
+    /// Represents racing car.
+    /// </summary>
+    public class RacingCar : Vehicle
     {
-        public override int EngineHealth
+        //Events
+        public event EventHandler<RacingCarEventArgs> EngineHealthChanged;
+        public event EventHandler<RacingCarEventArgs> EngineIsAboutToBlow;
+        public event EventHandler<RacingCarEventArgs> EngineHasDied;
+
+        private double _timePassed;
+        private double _currentSpeed;
+        private double _engineHealth;
+
+        public override double CurrentSpeed
         {
-            get => default;
+            get => _currentSpeed;
             set
             {
-                
+                if (value >= MaxSpeed - 10)
+                {
+                    EngineHealth -= 10;
+                    EngineHealthChanged?.Invoke(this, new RacingCarEventArgs("Health decreased by 10 points"));
+                }
+                _currentSpeed = value;
+            }
+        }
+
+        public override double EngineHealth
+        {
+            get => _engineHealth;
+            set
+            {
+                if (value is > 0 and <= 10)
+                {
+                    EngineIsAboutToBlow?.Invoke(this, new RacingCarEventArgs("Engine health is critical!!!"));
+                    _engineHealth = value;
+                }
+                else if (value <= 0)
+                {
+                    EngineHasDied?.Invoke(this, new RacingCarEventArgs("Engine has blown!"));
+                    _engineHealth = 0;
+                }
+                else
+                {
+                    _engineHealth = value;
+                }
+            }
+        }
+
+        public double TimePassed
+        {
+            get => _timePassed;
+            set
+            {
+                _timePassed = value;
             }
         }
 
         public Racer? Racer { get; init; }
 
-
-        public IEnumerator<RacingCar> GetEnumerator()
+        public RacingCar(){}
+        public RacingCar(double maxSpeed, double gasAmount, Racer racer) : base(maxSpeed, gasAmount)
         {
-            throw new NotImplementedException();
+            Racer = racer;
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
+        /// <summary>
+        /// Check if car is still alive.
+        /// </summary>
+        public bool StillAlive()
         {
-            return GetEnumerator();
+            return !(EngineHealth <= 0);
         }
+
+        /// <summary>
+        /// Updating current speed. (Can be improved surely)
+        /// </summary>
+        public void Accelerate()
+        {
+            Random r = new Random();
+            CurrentSpeed = r.NextDouble() * 200 + 1;
+        }
+
     }
 }
