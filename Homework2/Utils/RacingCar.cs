@@ -14,7 +14,7 @@ namespace Homework2.Utils
 
         private double _timePassed;
         private double _currentSpeed;
-        private double _engineHealth;
+        private double _engineHealth = 100;
 
         public override double CurrentSpeed
         {
@@ -64,7 +64,8 @@ namespace Homework2.Utils
         public Racer? Racer { get; init; }
 
         public RacingCar(){}
-        public RacingCar(double maxSpeed, double gasAmount, Racer racer) : base(maxSpeed, gasAmount)
+        public RacingCar(string? modelName, double maxSpeed, double gasAmount, Racer racer)
+            : base(modelName, maxSpeed, gasAmount)
         {
             Racer = racer;
         }
@@ -82,9 +83,22 @@ namespace Homework2.Utils
         /// </summary>
         public void Accelerate()
         {
-            Random r = new Random();
-            CurrentSpeed = r.NextDouble() * 200 + 1;
+            if (EngineHealth <= 0)
+            {
+                EngineHasDied?.Invoke(this, new RacingCarEventArgs("Engine has died!"));
+            }
+            CurrentSpeed = new Random().NextDouble() * 200 + 1;
         }
 
+
+        public int CompareTo(RacingCar? other)
+        {
+            return this.TimePassed.CompareTo(other.TimePassed);
+        }
+
+        public override string ToString()
+        {
+            return $"{Racer?.Name} driving {ModelName}";
+        }
     }
 }

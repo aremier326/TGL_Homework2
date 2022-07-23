@@ -11,6 +11,7 @@ namespace Homework2.Utils.Abstracts
     public abstract class Vehicle
     {
         
+        public string ModelName { get; init; }
         public double MaxSpeed { get; init; }
         public double GasAmount { get; set; }
         public virtual double DistancePassed { get; set; }
@@ -19,8 +20,9 @@ namespace Homework2.Utils.Abstracts
 
         protected Vehicle() {}
         
-        protected Vehicle(double maxSpeed, double gasAmount)
+        protected Vehicle(string? modelName, double maxSpeed, double gasAmount)
         {
+            ModelName = modelName;
             MaxSpeed = maxSpeed;
             GasAmount = gasAmount;
         }
