@@ -5,7 +5,7 @@ namespace Homework2.Utils
     /// <summary>
     /// Represents racing car.
     /// </summary>
-    public class RacingCar : Vehicle
+    public class RacingCar : Vehicle, IComparable<RacingCar>
     {
         #region Events
 
@@ -116,7 +116,7 @@ namespace Homework2.Utils
             //{
             //    EngineHasDied?.Invoke(this, new RacingCarEventArgs("Engine has died!"));
             //}
-            CurrentSpeed = new Random().NextDouble() * 200 + 1;
+            CurrentSpeed = new Random().NextDouble() * MaxSpeed + 1;
         }
 
         /// <summary>

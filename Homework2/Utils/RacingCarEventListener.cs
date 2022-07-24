@@ -15,7 +15,7 @@ namespace Homework2.Utils
         {
             if (sender is RacingCar car)
             {
-                Console.WriteLine($"Racer {car} be more careful! {e.msg}");
+                Console.WriteLine($"Racer {car} be more careful! {e.msg}. Current health is {car.EngineHealth}");
             }
         }
 
@@ -31,7 +31,7 @@ namespace Homework2.Utils
         {
             if (sender is RacingCar car)
             {
-                Console.WriteLine($"Racer {car} has been disqualified! {e.msg}");
+                Console.WriteLine($"\n-------Racer {car} has been disqualified! {e.msg}-------\n");
             }
         }
     }
