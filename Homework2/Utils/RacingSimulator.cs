@@ -8,67 +8,59 @@ namespace Homework2.Utils
     {
         private Track? Track { get; }
         
-        private List<RacingCar>? participants;
+        private readonly List<RacingCar>? _participants;
 
+        public const double RaceDistanceIteration = 50;
 
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
         public RacingSimulator(){}
 
+        /// <summary>
+        /// Creates an instance of RacingSimulator object
+        /// </summary>
+        /// <param name="track">Track instance.</param>
+        /// <param name="participants">List of participants obj.</param>
         public RacingSimulator(Track track, List<RacingCar> participants)
         {
             Track = track;
-            this.participants = participants;
+            _participants = participants;
         }
 
-        public static void HealthChanged(object sender, RacingCarEventArgs e)
-        {
-            if (sender is RacingCar car)
-            {
-                Console.WriteLine($"Racer {car} be more careful! {e.msg}");
-            }
-        }       
-
-        public static void AboutToBlow(object sender, RacingCarEventArgs e)
-        {
-            if (sender is RacingCar car)
-            {
-                Console.WriteLine($"Racer {car} SLOW DOWN! {e.msg}");
-            }
-        }
-
-        public static void EngineHasBlown(object sender, RacingCarEventArgs e)
-        {
-            if (sender is RacingCar car)
-            {
-                Console.WriteLine($"Racer {car} has been disqualified! {e.msg}");
-            }
-        }
-
+        /// <summary>
+        /// Method for starting the race.
+        /// </summary>
         public void RunRace()
         {
-            foreach (var participant in participants)
+            foreach (var participant in _participants)
             {
-                Console.WriteLine("running in foreach");
                 RunParticipant(participant);
             }
             GetWinner();
         }
 
-
+        /// <summary>
+        /// Prints data about race winner (if he exists).
+        /// </summary>
         private void GetWinner()
         {
-            var winner = participants.Where(x => x.StillAlive()).Min();
+            var winner = _participants?.Where(x => x.StillAlive()).Min();
             Console.WriteLine(winner != null
                 ? $"Here is the winner! {winner}"
                 : "Sorry, there is no winner!");
         }
 
+        /// <summary>
+        /// Starts race for single participant.
+        /// </summary>
+        /// <param name="participant"></param>
         private void RunParticipant(RacingCar participant)
         {
-            participant.EngineHealthChanged += HealthChanged;
-            participant.EngineIsAboutToBlow += AboutToBlow;
-            participant.EngineHasDied += EngineHasBlown;
+            participant.EngineHealthChanged += RacingCarEventListener.HealthChanged;
+            participant.EngineIsAboutToBlow += RacingCarEventListener.AboutToBlow;
+            participant.EngineHasDied += RacingCarEventListener.EngineHasBlown;
             
-
             try
             {
                 double distance = Track.LapDistance * Track.LapAmount;
@@ -80,9 +72,11 @@ namespace Homework2.Utils
                     participant.TimePassed += (50 / participant.CurrentSpeed)
                                               * Track.SurfaceCondition * Track.WeatherCondition;
 
-                    distance -= 50;
-                    //Console.WriteLine($"dist: {distance}, time: {participant.TimePassed}, " +
-                    //                  $"curSpeed: {participant.CurrentSpeed}, engine: {participant.EngineHealth}");
+                    distance -= RaceDistanceIteration;
+                    if (distance <= 0)
+                    {
+                        Console.WriteLine($"Participant {participant} finished the race!");
+                    }
                 }
             }
             catch (NullReferenceException e)

@@ -1,18 +1,23 @@
 ﻿namespace Homework2.Utils
 {
     /// <summary>
-    /// Represents racing track.
+    /// Represents racing track instance.
     /// </summary>
     public class Track
     {
+        #region Props
+
         public string? Title { get; init; }
         public int LapAmount { get; init; }
         public double LapDistance { get; init; }
         public double WeatherCondition { get; init; }
         public double SurfaceCondition { get; init; }
 
+        #endregion
+
+
         /// <summary>
-        /// Struct for choosing weather coefficient when calculating racer score.
+        /// Struct for choosing weather coefficient when calculating racer time.
         /// </summary>
         public struct WeatherConditionState
         {
@@ -25,7 +30,7 @@
         }
 
         /// <summary>
-        /// Struct for choosing weather coefficient when calculating racer score.
+        /// Struct for choosing weather coefficient when calculating racer time.
         /// </summary>
         public struct SurfaceConditionState
         {
@@ -37,6 +42,14 @@
 
         public Track() { }
 
+        /// <summary>
+        /// Creates Track instance.
+        /// </summary>
+        /// <param name="title">Track title.</param>
+        /// <param name="lapAmount">Amount of laps.</param>
+        /// <param name="lapDistance">Distance of single lap.</param>
+        /// <param name="weatherCondition">Weather condition coefficient.</param>
+        /// <param name="surfaceCondition">Surface condition coefficient.</param>
         public Track(string? title, int lapAmount, double lapDistance, double weatherCondition, double surfaceCondition)
         {
             Title = title;
