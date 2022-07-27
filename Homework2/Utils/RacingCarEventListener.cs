@@ -34,5 +34,26 @@ namespace Homework2.Utils
                 Console.WriteLine($"\n-------Racer {car} has been disqualified! {e.msg}-------\n");
             }
         }
+
+        public static void RacingCarAdded(object? sender, RacingCarEventArgs e)
+        {
+            if (sender is RacingCar car)
+            {
+                Console.WriteLine(e.msg);
+            }
+        }
+
+        public static void RacingCarRemoved(object? sender, RacingCarEventArgs e)
+        {
+            if (sender is RacingCar car)
+            {
+                Console.WriteLine(e.msg);
+            }
+        }
+
+        public static void SpeedChanged(object? sender, RacingCarEventArgs e)
+        {
+            Console.WriteLine(e.msg);
+        }
     }
 }
