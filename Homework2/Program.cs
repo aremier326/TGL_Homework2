@@ -11,7 +11,7 @@ namespace Homework2
 
         public static async Task Run()
         {
-            List<RacingCar> participants = new List<RacingCar>()
+            RacingCarCollection participants = new ()
             {
                 new RacingCar("Mercedes", 200, 100, new Racer("Artem Meniak")),
                 new RacingCar("El Camino", 200, 100, new Racer("Jessy Pinkman")),

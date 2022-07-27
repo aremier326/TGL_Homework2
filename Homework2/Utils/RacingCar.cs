@@ -9,9 +9,10 @@ namespace Homework2.Utils
     {
         #region Events
 
-        public event EventHandler<RacingCarEventArgs> EngineHealthChanged;
-        public event EventHandler<RacingCarEventArgs> EngineIsAboutToBlow;
-        public event EventHandler<RacingCarEventArgs> EngineHasDied;
+        public event EventHandler<RacingCarEventArgs> SpeedChanged = delegate {};
+        public event EventHandler<RacingCarEventArgs> EngineHealthChanged = delegate {};
+        public event EventHandler<RacingCarEventArgs> EngineIsAboutToBlow = delegate {};
+        public event EventHandler<RacingCarEventArgs> EngineHasDied = delegate {};
 
         #endregion
 
@@ -37,6 +38,11 @@ namespace Homework2.Utils
                     EngineHealth -= 10;
                     if(StillAlive())
                         EngineHealthChanged?.Invoke(this, new RacingCarEventArgs("Health decreased by 10 points"));
+                }
+                else
+                {
+                    SpeedChanged.Invoke(this, 
+                        new RacingCarEventArgs($"Current speed of {ModelName} is {CurrentSpeed}, distance passed: {DistancePassed}"));
                 }
                 _currentSpeed = value;
             }
@@ -77,6 +83,11 @@ namespace Homework2.Utils
         }
 
         /// <summary>
+        /// Contains distance passed by participant.
+        /// </summary>
+        public double DistancePassed { get; set; }
+
+        /// <summary>
         /// Racer object.
         /// </summary>
         public Racer? Racer { get; init; }
@@ -112,10 +123,6 @@ namespace Homework2.Utils
         /// </summary>
         public void Accelerate()
         {
-            //if (!StillAlive())
-            //{
-            //    EngineHasDied?.Invoke(this, new RacingCarEventArgs("Engine has died!"));
-            //}
             CurrentSpeed = new Random().NextDouble() * MaxSpeed + 1;
         }
 
